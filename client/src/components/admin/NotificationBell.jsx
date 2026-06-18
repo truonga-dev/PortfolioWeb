@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiBell, FiX } from 'react-icons/fi';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://portfoliowebapi.onrender.com');
 
 const NotificationBell = () => {
   const [notifications, setNotifications] = useState([]);

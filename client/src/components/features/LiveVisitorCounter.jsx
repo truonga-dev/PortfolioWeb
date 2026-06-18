@@ -3,7 +3,8 @@ import { motion } from 'framer-motion';
 import { FiUsers } from 'react-icons/fi';
 import { io } from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+const socket = io('https://portfoliowebapi.onrender.com');
+
 
 const LiveVisitorCounter = () => {
   const [count, setCount] = useState(0);
