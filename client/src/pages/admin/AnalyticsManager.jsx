@@ -8,7 +8,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 
 const StatCard = ({ title, value, icon, change, color }) => (
   <motion.div

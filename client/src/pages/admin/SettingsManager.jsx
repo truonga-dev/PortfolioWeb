@@ -10,7 +10,7 @@ import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('adminToken');

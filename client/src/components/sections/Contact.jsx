@@ -13,7 +13,7 @@ const Contact = () => {
   const [contactInfo, setContactInfo] = useState({ email: '...', phone: '...', location: '...' });
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/settings/public')
+    axios.get('https://portfoliowebapi.onrender.com/api/settings/public')
       .then(({ data }) => { if (data.data?.profile) setContactInfo(data.data.profile); })
       .catch(console.error);
   }, []);

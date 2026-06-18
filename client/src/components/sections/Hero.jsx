@@ -16,13 +16,13 @@ const Hero = () => {
   const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/settings/public')
+    axios.get('https://portfoliowebapi.onrender.com/api/settings/public')
       .then(({ data }) => { if (data.data?.profile) setProfile(prev => ({ ...prev, ...data.data.profile })); })
       .catch(console.error);
-    axios.get('http://localhost:5000/api/projects')
+    axios.get('https://portfoliowebapi.onrender.com/api/projects')
       .then(({ data }) => setProjects(data.data || []))
       .catch(console.error);
-    axios.get('http://localhost:5000/api/skills')
+    axios.get('https://portfoliowebapi.onrender.com/api/skills')
       .then(({ data }) => setSkills(data.data || []))
       .catch(console.error);
   }, []);

@@ -33,7 +33,7 @@ const quillContentStyles = `
   .ql-rendered img  { max-width: 100%; border-radius: 10px; margin: 1rem 0; }
 `;
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 API.interceptors.request.use(config => {
   const token = localStorage.getItem('adminToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;

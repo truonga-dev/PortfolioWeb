@@ -1,17 +1,16 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: 'https://portfoliowebapi.onrender.com/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
   }
 });
 
-// Request interceptor
 API.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('adminToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,12 +19,11 @@ API.interceptors.request.use(
   error => Promise.reject(error)
 );
 
-// Response interceptor
 API.interceptors.response.use(
   response => response,
   error => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('adminToken');
     }
     return Promise.reject(error);
   }

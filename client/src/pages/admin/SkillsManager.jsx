@@ -4,7 +4,7 @@ import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiX, FiGrid, FiList } from 'react-
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 
 const CATEGORIES = ['all', 'frontend', 'backend', 'database', 'devops', 'tools', 'soft-skills', 'learning'];
 const CATEGORY_COLORS = {

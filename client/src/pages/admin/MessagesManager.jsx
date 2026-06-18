@@ -4,7 +4,7 @@ import { FiSearch, FiStar, FiMail, FiTrash2, FiArchive, FiCheckCircle, FiCircle,
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 
 const MessagesManager = () => {
   const [messages, setMessages] = useState([]);

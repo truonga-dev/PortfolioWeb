@@ -9,7 +9,7 @@ const Footer = () => {
   const [social, setSocial] = useState({});
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/settings/public')
+    axios.get('https://portfoliowebapi.onrender.com/api/settings/public')
       .then(({ data }) => { if (data.data?.social) setSocial(data.data.social); })
       .catch(console.error);
   }, []);

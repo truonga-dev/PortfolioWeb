@@ -20,7 +20,7 @@ const Blog = () => {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/blog')
+    axios.get('https://portfoliowebapi.onrender.com/api/blog')
       .then(({ data }) => setPosts(data.data || []))
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -29,7 +29,7 @@ const Blog = () => {
   const handleLike = async (postId) => {
     if (likedPosts.includes(postId)) return;
     try {
-      await axios.post(`http://localhost:5000/api/blog/${postId}/like`);
+      await axios.post(`https://portfoliowebapi.onrender.com/api/blog/${postId}/like`);
       setPosts(prev => prev.map(p => p._id === postId ? {...p, likes: (p.likes||0)+1} : p));
       if (selectedPost?._id === postId) setSelectedPost(prev => ({...prev, likes: (prev.likes||0)+1}));
       setLikedPosts([...likedPosts, postId]);
@@ -39,7 +39,7 @@ const Blog = () => {
   const handleComment = async (postId) => {
     if (!comment.trim() || !commentName.trim()) return toast.error('Please enter your name and comment');
     try {
-      const { data } = await axios.post(`http://localhost:5000/api/blog/${postId}/comment`, { user: commentName, content: comment });
+      const { data } = await axios.post(`https://portfoliowebapi.onrender.com/api/blog/${postId}/comment`, { user: commentName, content: comment });
       setPosts(prev => prev.map(p => p._id === postId ? {...p, comments: [...(p.comments||[]), data.data]} : p));
       if (selectedPost?._id === postId) setSelectedPost(prev => ({...prev, comments: [...(prev.comments||[]), data.data]}));
       setComment('');
@@ -68,7 +68,6 @@ const Blog = () => {
           <h2 className="text-4xl md:text-5xl font-bold mt-2 mb-4">{t('latest_articles')}</h2>
           <p className="text-gray-400 max-w-2xl mx-auto">{t('blog_desc')}</p>
         </motion.div>
-
         <div className="flex justify-center flex-wrap gap-3 mb-12">
           {categories.map(cat => (
             <button key={cat} onClick={() => setActiveCategory(cat)}
@@ -77,7 +76,6 @@ const Blog = () => {
             </button>
           ))}
         </div>
-
         {!selectedPost && (
           <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post, i) => (
@@ -111,7 +109,6 @@ const Blog = () => {
             ))}
           </motion.div>
         )}
-
         <AnimatePresence>
           {selectedPost && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -156,7 +153,6 @@ const Blog = () => {
                   </div>
                   <h1 className="text-2xl md:text-3xl font-bold mb-6">{selectedPost.title}</h1>
                   <div className="blog-content text-gray-300 leading-relaxed space-y-4 mb-10" dangerouslySetInnerHTML={{ __html: selectedPost.content }} />
-                  
                   <div className="flex items-center gap-6 py-6 border-t border-b border-white/10 mb-8">
                     <button onClick={() => handleLike(selectedPost._id)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-xl ${likedPosts.includes(selectedPost._id) ? 'bg-red-500/20 text-red-400' : 'bg-white/5 text-gray-400'}`}>
@@ -164,7 +160,6 @@ const Blog = () => {
                     </button>
                     <span className="flex items-center gap-2 text-gray-400"><FiMessageCircle size={18} /> {selectedPost.comments?.length||0} {t('comments')}</span>
                   </div>
-
                   <div className="space-y-4 mb-8">
                     <h3 className="text-lg font-bold"><FiMessageCircle className="text-primary-400 inline mr-2" />{t('comments')} ({selectedPost.comments?.length||0})</h3>
                     {selectedPost.comments?.map((c,i) => (
@@ -174,7 +169,6 @@ const Blog = () => {
                       </div>
                     ))}
                   </div>
-
                   <div className="bg-dark-900/50 border border-white/5 rounded-2xl p-5">
                     <h4 className="font-bold mb-3"><FiUser className="text-primary-400 inline mr-2" />{t('leave_comment')}</h4>
                     <input value={commentName} onChange={e => setCommentName(e.target.value)} placeholder={t('your_name')}
