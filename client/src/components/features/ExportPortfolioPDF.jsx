@@ -172,7 +172,6 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
           ratingText: { fontSize: 8, color: '#F59E0B', font: 'Roboto' },
         },
 
-        defaultStyle: { font: 'Roboto', fontSize: 10 }
       };
 
       pdfMake.createPdf(docDefinition).download(`Portfolio-${profile?.name?.replace(/\s/g, '-') || 'Your-Name'}.pdf`);
