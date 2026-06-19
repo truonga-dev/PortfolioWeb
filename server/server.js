@@ -23,12 +23,7 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'https://truonga-portfolio.vercel.app',
-    'https://truonga-portfolio-*.vercel.app'
-  ],
+  origin: ['https://portfolio-t7a105.vercel.app', 'http://localhost:5173', 'http://localhost:5174'],
   credentials: true
 }));
 
@@ -67,8 +62,8 @@ app.use('/api/chatbot', chatbotRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     timestamp: new Date(),
     uptime: process.uptime()
   });
@@ -82,7 +77,7 @@ app.use((req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Something went wrong!',
     message: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
