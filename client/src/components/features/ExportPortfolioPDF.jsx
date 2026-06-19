@@ -5,10 +5,8 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import toast from 'react-hot-toast';
 
-// Register fonts
 pdfMake.vfs = pdfFonts.pdfMake ? pdfFonts.pdfMake.vfs : pdfFonts.vfs;
 
-// Roboto font đã có sẵn trong pdfmake, hỗ trợ ký tự Latin + 1 số Unicode
 pdfMake.fonts = {
   Roboto: {
     normal: 'Roboto-Regular.ttf',
@@ -22,22 +20,15 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
   const [loading, setLoading] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
 
-  // Helper: Tạo star rating text
   const getStars = (rating) => {
     const full = Math.floor(rating);
     const half = rating % 1 >= 0.5;
     return '★'.repeat(full) + (half ? '½' : '') + '☆'.repeat(5 - full - (half ? 1 : 0));
   };
 
-  // ═══════════════════════════════════════
-  // FULL PORTFOLIO PDF
-  // ═══════════════════════════════════════
   const exportFullPDF = async () => {
     setLoading(true);
     try {
-      const today = new Date().toLocaleDateString('vi-VN');
-
-      // Build skills table
       const skillCategories = {};
       if (skills && skills.length > 0) {
         skills.forEach(s => {
@@ -53,31 +44,21 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
           style: 'skillCategory',
           margin: [0, 8, 0, 4]
         });
-        
         categorySkills.forEach(skill => {
           skillSections.push({
             columns: [
               { text: skill.name, style: 'skillName', width: '25%' },
               {
-                table: {
-                  body: [[
-                    { text: '', fillColor: '#6366f1', border: [0, 0, 0, 0] }
-                  ]],
-                  widths: [`${skill.level}%`]
-                },
-                layout: 'noBorders',
-                width: '55%',
-                margin: [0, 3, 0, 0]
+                table: { body: [[{ text: '', fillColor: '#6366f1', border: [0, 0, 0, 0] }]], widths: [`${skill.level}%`] },
+                layout: 'noBorders', width: '55%', margin: [0, 3, 0, 0]
               },
               { text: `${skill.level}%`, style: 'skillLevel', width: '20%', alignment: 'right' }
             ],
-            columnGap: 8,
-            margin: [0, 2, 0, 0]
+            columnGap: 8, margin: [0, 2, 0, 0]
           });
         });
       });
 
-      // Build projects list
       const projectList = [];
       if (projects && projects.length > 0) {
         projects.slice(0, 6).forEach(project => {
@@ -85,16 +66,8 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
             stack: [
               { text: project.title, style: 'projectTitle' },
               { text: project.description || '', style: 'projectDesc', margin: [0, 3, 0, 5] },
-              project.technologies ? {
-                text: project.technologies.slice(0, 6).join('  •  '),
-                style: 'projectTech',
-                margin: [0, 0, 0, 8]
-              } : {},
-              project.averageRating ? {
-                text: `${getStars(project.averageRating)}  ${project.averageRating}/5  (${project.totalRatings || 0} reviews)`,
-                style: 'ratingText',
-                margin: [0, 0, 0, 12]
-              } : {},
+              project.technologies ? { text: project.technologies.slice(0, 6).join('  •  '), style: 'projectTech', margin: [0, 0, 0, 8] } : {},
+              project.averageRating ? { text: `${getStars(project.averageRating)}  ${project.averageRating}/5  (${project.totalRatings || 0} reviews)`, style: 'ratingText', margin: [0, 0, 0, 12] } : {},
             ],
             margin: [0, 0, 0, 8]
           });
@@ -104,59 +77,30 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
       const docDefinition = {
         pageSize: 'A4',
         pageMargins: [25, 25, 25, 25],
-        defaultStyle: { font: 'Roboto', fontSize: 10, color: '#333333' },
-        
         content: [
-          // ═══════ HEADER ═══════
-          {
-            canvas: [
-              { type: 'rect', x: 0, y: 0, w: 515.28, h: 90, color: '#6366f1' }
-            ],
-            absolutePosition: { x: 0, y: 0 }
-          },
-          {
-            text: profile?.name || 'YOUR NAME',
-            style: 'nameTitle',
-            color: '#FFFFFF',
-            margin: [0, 15, 0, 0]
-          },
-          {
-            text: profile?.title || 'Software Engineer',
-            style: 'jobTitle',
-            color: '#E0E7FF',
-            margin: [0, 2, 0, 20]
-          },
-
-          // ═══════ CONTACT INFO ═══════
+          { canvas: [{ type: 'rect', x: 0, y: 0, w: 515.28, h: 90, color: '#6366f1' }], absolutePosition: { x: 0, y: 0 } },
+          { text: profile?.name || 'YOUR NAME', style: 'nameTitle', color: '#FFFFFF', margin: [0, 15, 0, 0] },
+          { text: profile?.title || 'Software Engineer', style: 'jobTitle', color: '#E0E7FF', margin: [0, 2, 0, 20] },
           {
             columns: [
               { text: `📧 ${profile?.email || 'email@example.com'}`, style: 'contactText', width: '50%' },
               { text: `📱 ${profile?.phone || '+84 123 456 789'}`, style: 'contactText', width: '50%' }
-            ],
-            margin: [0, 0, 0, 3]
+            ], margin: [0, 0, 0, 3]
           },
           {
             columns: [
               { text: `📍 ${profile?.location || 'Vietnam'}`, style: 'contactText', width: '50%' },
               { text: `🌐 ${profile?.website || 'yourname.dev'}`, style: 'contactText', width: '50%' }
-            ],
-            margin: [0, 0, 0, 25]
+            ], margin: [0, 0, 0, 25]
           },
-
-          // ═══════ ABOUT ═══════
           { text: '📋 ABOUT ME', style: 'sectionHeader', margin: [0, 0, 0, 8] },
           { text: profile?.bio || 'Software Engineer passionate about building amazing products.', style: 'bodyText', margin: [0, 0, 0, 20] },
-
-          // ═══════ SKILLS ═══════
           { text: '🎯 SKILLS', style: 'sectionHeader', margin: [0, 0, 0, 8] },
           ...skillSections,
           { text: '', margin: [0, 10, 0, 0] },
-
-          // ═══════ PROJECTS ═══════
           { text: '💻 PROJECTS', style: 'sectionHeader', margin: [0, 15, 0, 8], pageBreak: 'before' },
           ...projectList,
         ],
-
         styles: {
           nameTitle: { fontSize: 28, bold: true, font: 'Roboto' },
           jobTitle: { fontSize: 13, font: 'Roboto', italics: true },
@@ -170,8 +114,7 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
           projectDesc: { fontSize: 9, color: '#666666', lineHeight: 1.4, font: 'Roboto' },
           projectTech: { fontSize: 8, color: '#6366f1', font: 'Roboto' },
           ratingText: { fontSize: 8, color: '#F59E0B', font: 'Roboto' },
-        },
-
+        }
       };
 
       pdfMake.createPdf(docDefinition).download(`Portfolio-${profile?.name?.replace(/\s/g, '-') || 'Your-Name'}.pdf`);
@@ -185,9 +128,6 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
     }
   };
 
-  // ═══════════════════════════════════════
-  // SIMPLE RESUME PDF
-  // ═══════════════════════════════════════
   const exportSimplePDF = async () => {
     setLoading(true);
     try {
@@ -195,42 +135,20 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
         pageSize: 'A4',
         pageMargins: [30, 30, 30, 30],
         content: [
-          // Header
-          {
-            canvas: [
-              { type: 'rect', x: 0, y: 0, w: 515.28, h: 80, color: '#6366f1' }
-            ],
-            absolutePosition: { x: 0, y: 0 }
-          },
+          { canvas: [{ type: 'rect', x: 0, y: 0, w: 515.28, h: 80, color: '#6366f1' }], absolutePosition: { x: 0, y: 0 } },
           { text: profile?.name || 'YOUR NAME', style: 'name', color: '#FFFFFF', margin: [0, 12, 0, 0] },
           { text: profile?.title || 'Software Engineer', style: 'title', color: '#E0E7FF', margin: [0, 4, 0, 0] },
-
-          // Contact
           { text: 'CONTACT INFORMATION', style: 'section', margin: [0, 40, 0, 10] },
           { text: `📧  ${profile?.email || 'email@example.com'}`, style: 'info', margin: [0, 0, 0, 5] },
           { text: `📱  ${profile?.phone || '+84 123 456 789'}`, style: 'info', margin: [0, 0, 0, 5] },
           { text: `📍  ${profile?.location || 'Vietnam'}`, style: 'info', margin: [0, 0, 0, 5] },
           { text: `🌐  ${profile?.website || 'yourname.dev'}`, style: 'info', margin: [0, 0, 0, 20] },
-
-          // About
           { text: 'ABOUT', style: 'section', margin: [0, 0, 0, 10] },
           { text: profile?.bio || 'Software Engineer passionate about building amazing products.', style: 'about', margin: [0, 0, 0, 20] },
-
-          // Skills Summary
           skills && skills.length > 0 ? { text: 'KEY SKILLS', style: 'section', margin: [0, 0, 0, 10] } : {},
-          skills && skills.length > 0 ? {
-            text: skills.slice(0, 8).map(s => s.name).join('  •  '),
-            style: 'skills',
-            margin: [0, 0, 0, 20]
-          } : {},
-
-          // Projects Summary
+          skills && skills.length > 0 ? { text: skills.slice(0, 8).map(s => s.name).join('  •  '), style: 'skills', margin: [0, 0, 0, 20] } : {},
           projects && projects.length > 0 ? { text: 'FEATURED PROJECTS', style: 'section', margin: [0, 0, 0, 10] } : {},
-          ...(projects && projects.length > 0 ? projects.slice(0, 3).map(p => ({
-            text: `▸ ${p.title}`,
-            style: 'projectItem',
-            margin: [0, 0, 0, 5]
-          })) : []),
+          ...(projects && projects.length > 0 ? projects.slice(0, 3).map(p => ({ text: `▸ ${p.title}`, style: 'projectItem', margin: [0, 0, 0, 5] })) : []),
         ],
         styles: {
           name: { fontSize: 26, bold: true },
@@ -264,7 +182,6 @@ const ExportPortfolioPDF = ({ profile, projects, skills }) => {
         {loading ? <FiLoader className="animate-spin" /> : <FiDownload />}
         {loading ? 'Exporting...' : 'Download CV'}
       </motion.button>
-
       <AnimatePresence>
         {showOptions && (
           <motion.div
