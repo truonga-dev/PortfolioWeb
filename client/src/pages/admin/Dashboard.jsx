@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { FiCode, FiFileText, FiMessageSquare, FiUsers, FiTrendingUp, FiTrendingDown } from 'react-icons/fi';
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ baseURL: 'https://portfoliowebapi.onrender.com/api' });
 
 const StatCard = ({ title, value, icon, change, color }) => (
   <motion.div

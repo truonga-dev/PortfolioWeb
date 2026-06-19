@@ -13,7 +13,7 @@ const AdminLogin = () => {
     e.preventDefault();
     setError('');
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', { password });
+      const { data } = await axios.post('https://portfoliowebapi.onrender.com/api/auth/login', { password });
       if (data.success) {
         localStorage.setItem('adminToken', data.token);
         navigate('/admin/dashboard');
